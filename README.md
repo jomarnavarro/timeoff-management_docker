@@ -49,3 +49,18 @@ You can set the following variables to configure the `timeoff` container:
 
 3. Build image:
 `docker build -t timeoff-management:latest .`
+
+# Running in local environment
+
+I tried using docker-compose.yaml file in examples/docker-compose.yml, unsuccesfully.  It had to do mainly with two factors:
+
+a) It uses a mariadb image, which can't use volumes.  
+b) The database takes longer to start, so the timeoff app container throws an error.  
+
+The way I remedied it was by using a mysql image instead of the mariadb one.  However, I ran into the same problem with the db taking too long to start. So then I came up with the following commands from that docker-compose example file:
+
+`docker run --name timeoff_db -p3308:3306 -e MYSQL_ROOT_PASSWORD=timeoff -e MYSQL_DATABASE=timeoff -e MYSQL_USER=timeoff -eMYSQL_PASSWORD=timeoff mysql:5.6.45`
+
+I waited for the DB to be capable of accepting connections, about 10 seconds.
+
+`docker run --name timeoff_app -p3001:3000 --link timeoff_db -e ALLOW_ACCOUNTS_CREATION=true -e NODE_ENV=production -e MYSQL_HOST=timeoff_db -e MYSQL_USER=timeoff -e MYSQL_DATABASE=timeoff -e MYSQL_PASSWORD=timeoff thperret/timeoff-management:0.6.2`
