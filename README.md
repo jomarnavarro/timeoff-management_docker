@@ -59,7 +59,7 @@ b) The database takes longer to start, so the timeoff app container throws an er
 
 The way I remedied it was by using a mysql image instead of the mariadb one.  However, I ran into the same problem with the db taking too long to start. So then I came up with the following commands from that docker-compose example file:
 
-`docker run --name timeoff_db -p3308:3306 -e MYSQL_ROOT_PASSWORD=timeoff -e MYSQL_DATABASE=timeoff -e MYSQL_USER=timeoff -eMYSQL_PASSWORD=timeoff mysql:5.6.45`
+`docker run --name timeoff_db -p3308:3306 -e MYSQL_ROOT_PASSWORD=timeoff -e MYSQL_DATABASE=timeoff -e MYSQL_USER=timeoff -e MYSQL_PASSWORD=timeoff mysql:5.6.45`
 
 I waited for the DB to be capable of accepting connections, about 10 seconds.
 
